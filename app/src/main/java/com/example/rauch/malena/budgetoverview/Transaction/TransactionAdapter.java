@@ -15,14 +15,13 @@ import java.util.List;
 
 /*
 Adapter Class for the transaktions
- */
+
 
 public class TransactionAdapter extends RecyclerView.Adapter<ViewHolder> {
 
      private Cursor mCursor;
     private List<Transaction> mTransactions;
     final private ClickListener mTransactiClickListener;
-    public static final String REMINDER_POSITION = "Position";
 
     //Constructor
     public TransactionAdapter(Cursor cursor, List<Transaction> transaktions, ClickListener mTransactiClickListener) {
@@ -47,9 +46,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<ViewHolder> {
             return; // bail if returned null
         String name = mCursor.getString(mCursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_NAME_TRANSACTION));
 
-
-       Transaction transaction = mTransactions.get(position);
-       holder.textView.setText(transaction.getmName());
+       holder.textView.setText(name);
     }
 
     @Override
@@ -68,3 +65,4 @@ public class TransactionAdapter extends RecyclerView.Adapter<ViewHolder> {
     }
 
 }
+*/

@@ -9,17 +9,18 @@ import com.example.rauch.malena.budgetoverview.Transaction.TransactionContract;
 
 /**
  * Created by Test on 15.03.2018.
-*/
+ */
 
 public class DataSource {
 
     private Context mContext;
     private SQLiteDatabase mDatabase;
     private DBHelper mDBHelper;
-    private String[] TRANSACTIONS_ALL_COLUMNS = { TransactionContract.TransactionEntry._ID,
+    private String[] TRANSACTIONS_ALL_COLUMNS = {TransactionContract.TransactionEntry._ID,
             TransactionContract.TransactionEntry.COLUMN_NAME_TRANSACTION,
-            TransactionContract.TransactionEntry.COLUMN_AMOUNT_TRANSACTION,
-            TransactionContract.TransactionEntry.COLUMN_SPENT_TRANSACTION};
+            //TransactionContract.TransactionEntry.COLUMN_AMOUNT_TRANSACTION,
+            //TransactionContract.TransactionEntry.COLUMN_SPENT_TRANSACTION
+    };
 
     public DataSource(Context context) {
         mContext = context;
@@ -27,9 +28,10 @@ public class DataSource {
     }
 
     // Opens the database to use it
-    public void open()  {
+    public void open() {
         mDatabase = mDBHelper.getWritableDatabase();
     }
+
     // Closes the database when you no longer need it
     public void close() {
         mDBHelper.close();
@@ -38,8 +40,8 @@ public class DataSource {
     public void createTransaction(String trasnactionName, double trasnactionAmount, boolean trasnactionSpent) {
         ContentValues values = new ContentValues();
         values.put(TransactionContract.TransactionEntry.COLUMN_NAME_TRANSACTION, trasnactionName);
-        values.put(TransactionContract.TransactionEntry.COLUMN_AMOUNT_TRANSACTION, trasnactionAmount);
-        values.put(TransactionContract.TransactionEntry.COLUMN_SPENT_TRANSACTION, trasnactionSpent);
+        //values.put(TransactionContract.TransactionEntry.COLUMN_AMOUNT_TRANSACTION, trasnactionAmount);
+        //values.put(TransactionContract.TransactionEntry.COLUMN_SPENT_TRANSACTION, trasnactionSpent);
         mDatabase.insert(TransactionContract.TransactionEntry.TABLE_NAME, null, values);
     }
 
@@ -58,7 +60,7 @@ public class DataSource {
         ContentValues args = new ContentValues();
         args.put(TransactionContract.TransactionEntry.COLUMN_NAME_TRANSACTION, name);
 
-        mDatabase.update(TransactionContract.TransactionEntry.TABLE_NAME, args, TransactionContract.TransactionEntry._ID  + "=?",
+        mDatabase.update(TransactionContract.TransactionEntry.TABLE_NAME, args, TransactionContract.TransactionEntry._ID + "=?",
                 new String[]{Long.toString(id)});
     }
 

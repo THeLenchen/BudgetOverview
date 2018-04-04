@@ -13,25 +13,22 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.rauch.malena.budgetoverview.Database.DataSource;
 import com.example.rauch.malena.budgetoverview.Transaction.Transaction;
-import com.example.rauch.malena.budgetoverview.Transaction.TransactionAdapter;
 import com.example.rauch.malena.budgetoverview.Transaction.TransactionObjectAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class Tab3_transact extends Fragment implements ClickListener {
 
 
-    private TransactionAdapter mTransactionAdapter;
+    //private TransactionAdapter mTransactionAdapter;
+    private TransactionObjectAdapter mTransactionAdapter;
     private RecyclerView mTransactionRecyclerView;
-    private List<Transaction> mTransactions;
+    // private List<Transaction> mTransactions;
     public static final String TRANSACTION_POSITION = "Position";
-    private TextView mNewTransaction;
     private Cursor mCursor;
     private DataSource mDataSource;
 
@@ -39,18 +36,16 @@ public class Tab3_transact extends Fragment implements ClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.tap3_transakt, container, false);
 
-        mTransactions = new ArrayList<>();
+        //initialise DataSource for database operations
+        mDataSource = new DataSource(rootView.getContext());
+        mDataSource.open();
 
         //initialise RecyclerView, set Layout, set Adapter and define Transaction layout
         mTransactionRecyclerView = rootView.findViewById(R.id.tab3_RecyclerView_Transakt);
         mTransactionRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
-        TransactionObjectAdapter objectAdapter = new TransactionObjectAdapter(this.getContext(), mTransactions);
-        mTransactionRecyclerView.setAdapter(objectAdapter);
-        mNewTransaction = rootView.findViewById(R.id.editText_test);
+        mTransactionAdapter = new TransactionObjectAdapter(mCursor, this.getContext());
+        mTransactionRecyclerView.setAdapter(mTransactionAdapter);
 
-        //initialise DataSource for database operations
-        mDataSource = new DataSource(rootView.getContext());
-        mDataSource.open();
 
         //initialise the floatingbutton
         FloatingActionButton button = rootView.findViewById(R.id.floatingActionButton2_test);
@@ -73,11 +68,7 @@ public class Tab3_transact extends Fragment implements ClickListener {
                     //Called when a user swipes left or right on a ViewHolder
                     @Override
                     public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-
-                        //Get the index corresponding to the selected position
-                        int position = (viewHolder.getAdapterPosition());
-                        mTransactions.remove(position);
-                        mTransactionAdapter.notifyItemRemoved(position);
+                        return;
                     }
                 };
 
@@ -87,10 +78,6 @@ public class Tab3_transact extends Fragment implements ClickListener {
         updateUI();
 
         return rootView;
-    }
-
-    public DataSource getmDataSource(){
-        return mDataSource;
     }
 
     @Override
@@ -111,7 +98,7 @@ public class Tab3_transact extends Fragment implements ClickListener {
     private void updateUI() {
         mCursor = mDataSource.getAllTransactions();
         if (mTransactionAdapter == null) {
-            mTransactionAdapter = new TransactionAdapter(mCursor, mTransactions, this);
+            mTransactionAdapter = new TransactionObjectAdapter(mCursor, this.getContext());
             mTransactionRecyclerView.setAdapter(mTransactionAdapter);
         } else {
             mTransactionAdapter.swapCursor(mCursor);

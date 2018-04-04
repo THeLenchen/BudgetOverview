@@ -1,6 +1,7 @@
 package com.example.rauch.malena.budgetoverview.Transaction;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +18,13 @@ import java.util.List;
 
 public class TransactionObjectAdapter extends RecyclerView.Adapter<TransactionObjectViewHolder> {
 
-    private Context context;
-    public List<Transaction> listTransactionObject;
+    //private Context context;
+    private Cursor mCursor;
 
-    public TransactionObjectAdapter(Context context, List<Transaction> listTransactionObject) {
-        this.context = context;
-        this.listTransactionObject = listTransactionObject;
+
+    public TransactionObjectAdapter(Cursor cursor, Context context) {
+        //this.context = context;
+        this.mCursor = cursor;
     }
 
     //create a viewHolder for the transaction Item
@@ -34,24 +36,30 @@ public class TransactionObjectAdapter extends RecyclerView.Adapter<TransactionOb
 
     @Override
     public void onBindViewHolder(TransactionObjectViewHolder holder, int position) {
-        // Gets a single item in the list from its position
-        final Transaction transactionObject = listTransactionObject.get(position);
-        // The holder argument is used to reference the views inside the viewHolder
-        // Populate the views with the data from the list
-        holder.mName.setText(transactionObject.getmName());
-        holder.mAmount.setText(transactionObject.getmAmount().toString());
-        // The whole layout is used for the onClickListener instead of individual views
-        // inside the viewHolder
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //start activity
-            }
-        });
+        // Move the mCursor to the position of the item to be displayed
+        if (!mCursor.moveToPosition(position))
+            return; // bail if returned null
+        String name = mCursor.getString(mCursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_NAME_TRANSACTION));
+        //String amount = mCursor.getString(mCursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_AMOUNT_TRANSACTION));
+
+        holder.mName.setText(name);
+        //holder.mAmount.setText(amount);
+
     }
 
     @Override
     public int getItemCount() {
-        return  listTransactionObject.size();
+        return (mCursor == null ? 0 : mCursor.getCount());
+        //return mTransactions.size();
     }
+
+    public void swapCursor(Cursor newCursor) {
+        if (mCursor != null) mCursor.close();
+        mCursor = newCursor;
+        if (newCursor != null) {
+            // Force the RecyclerView to refresh
+            this.notifyDataSetChanged();
+        }
+    }
+
 }
