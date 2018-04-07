@@ -3,6 +3,7 @@ package com.example.rauch.malena.budgetoverview.Transaction;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,10 +41,10 @@ public class TransactionObjectAdapter extends RecyclerView.Adapter<TransactionOb
         if (!mCursor.moveToPosition(position))
             return; // bail if returned null
         String name = mCursor.getString(mCursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_NAME_TRANSACTION));
-        //String amount = mCursor.getString(mCursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_AMOUNT_TRANSACTION));
+        String amount = mCursor.getString(mCursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_AMOUNT_TRANSACTION));
 
         holder.mName.setText(name);
-        //holder.mAmount.setText(amount);
+        holder.mAmount.setText(amount);
 
     }
 

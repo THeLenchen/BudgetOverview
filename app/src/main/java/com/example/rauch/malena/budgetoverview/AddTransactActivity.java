@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
 import com.example.rauch.malena.budgetoverview.Database.DataSource;
 
 public class AddTransactActivity extends AppCompatActivity {
@@ -45,13 +46,10 @@ public class AddTransactActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 boolean goOn = true;
-                if (mSpent.isChecked() & !mGet.isChecked()) {
+                if (mSpent.isChecked()) {
                     mBooleanSpent = true;
-                } else if (!mSpent.isChecked() & mGet.isChecked()) {
-                    mBooleanSpent = false;
                 } else {
-                    Snackbar.make(view, "Please choose one of the RadioButtons", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    goOn = false;
+                    mBooleanSpent = false;
                 }
 
                 if (goOn == true) {
@@ -65,7 +63,8 @@ public class AddTransactActivity extends AppCompatActivity {
                     }
 
                     if (goOn == true) {
-                        mDataSource.createTransaction(mName.getText().toString(), amount, mBooleanSpent);
+                        String name = mName.getText().toString();
+                        mDataSource.createTransaction(name, amount, mBooleanSpent);
                         mDataSource.close();
                         finish();
                     }

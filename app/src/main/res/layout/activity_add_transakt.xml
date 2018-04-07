@@ -6,19 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.rauch.malena.budgetoverview.AddTransactActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
 
     <ImageButton
         android:id="@+id/addTransaction_imageButton_delete"
@@ -44,25 +32,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_save" />
 
-    <RadioButton
-        android:id="@+id/addTransaction_radioButton_get"
+    <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="28dp"
-        android:text="@string/spent"
+        app:layout_constraintBottom_toTopOf="@+id/addTransaction_editText_amount"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addTransaction_textView_titel" />
+        app:layout_constraintTop_toBottomOf="@+id/addTransaction_textView_titel">
 
-    <RadioButton
-        android:id="@+id/addTransaction_radioButton_give"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/get"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addTransaction_radioButton_get" />
+        <RadioButton
+            android:id="@+id/addTransaction_radioButton_give"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:text="@string/get"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addTransaction_radioButton_get" />
+
+        <RadioButton
+            android:id="@+id/addTransaction_radioButton_get"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="28dp"
+            android:layout_weight="1"
+            android:text="@string/spent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addTransaction_textView_titel" />
+    </RadioGroup>
 
     <TextView
         android:id="@+id/addTransaction_textView_titel"
@@ -89,7 +87,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="152dp"
+        android:layout_marginTop="160dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/amount"

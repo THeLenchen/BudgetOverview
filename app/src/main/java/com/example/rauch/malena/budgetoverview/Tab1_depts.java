@@ -1,6 +1,6 @@
 package com.example.rauch.malena.budgetoverview;
 
-
+import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -13,59 +13,44 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
 
 import com.example.rauch.malena.budgetoverview.Database.DataSource;
 import com.example.rauch.malena.budgetoverview.Depts.Dept;
 import com.example.rauch.malena.budgetoverview.Depts.DeptAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
-public class Tab1_depts extends Fragment implements ClickListener{
+public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.DeptClickListener{
 
     private DeptAdapter mDeptAdapter;
     private RecyclerView mDeptRecyclerView;
-    private List<Dept> mDepts;
-    private DataSource mDataSource;
-    private TextView mNewDept;
+    //Constants used when calling the update activity
     public static final String DEPT_POSITION = "Position";
+    //Database related local variables
+    private Cursor mCursor;
+    private DataSource mDataSource;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.tap1_depts, container, false);
 
-        mDepts = new ArrayList<>();
         mDeptRecyclerView = rootView.findViewById(R.id.tab1_RecyclerView);
         //mTransactionRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
         mDeptRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
-        mNewDept = rootView.findViewById(R.id.editText_test2);
+        mDeptAdapter = new DeptAdapter(this, mCursor);
+        mDeptRecyclerView.setAdapter(mDeptAdapter);
 
         mDataSource = new DataSource(rootView.getContext());
         mDataSource.open();
 
 
-        //Floatingbutton, OnClick starts new activity
+        //initialise the floatingbutton
         FloatingActionButton button = rootView.findViewById(R.id.tap1_floatingActionButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String text = mNewDept.getText().toString();
-                Dept newDept = new Dept(text);
+                //Intent intent = new Intent(getContext(), AddTransactActivity.class);
+                //startActivity(intent);
 
-                if (!(TextUtils.isEmpty(text))) {
-                    //Add the text to the list (datamodel)
-                    mDepts.add(newDept);
-
-                    mDeptAdapter.notifyDataSetChanged();
-
-                    mNewDept.setText("");
-                } else {
-                    //Show a message to the user if the textfield is empty
-                    Snackbar.make(rootView, "Please enter some text in the textfield", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }
-                updateUI();
             }
         });
 
@@ -83,10 +68,11 @@ public class Tab1_depts extends Fragment implements ClickListener{
 
                         //Get the index corresponding to the selected position
                         int position = (viewHolder.getAdapterPosition());
-                        mDepts.remove(position);
+                        //       mReminders.remove(position);
                         mDeptAdapter.notifyItemRemoved(position);
                     }
                 };
+
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mDeptRecyclerView);
@@ -97,8 +83,9 @@ public class Tab1_depts extends Fragment implements ClickListener{
     }
 
     private void updateUI() {
+        mCursor = mDataSource.getAllDepts();
         if (mDeptAdapter == null) {
-            mDeptAdapter = new DeptAdapter(mDepts, this);
+            mDeptAdapter = new DeptAdapter(this, mCursor);
             mDeptRecyclerView.setAdapter(mDeptAdapter);
         } else {
             mDeptAdapter.notifyDataSetChanged();
@@ -106,32 +93,31 @@ public class Tab1_depts extends Fragment implements ClickListener{
     }
 
     @Override
-    public void reminderonClick(long id) {
+    public void reminderonClick(long id) {    }
+
+    @Override
+    public void reminderonLongClick(long id) {    }
+
+    @Override
+    public void onLoadFinished(Loader<Object> loader, Object data) {    }
+
+    @Override
+    public void onLoaderReset(Loader<Object> loader) {    }
+
+    @Override
+    public void transactionOnLongClick(long id) {    }
+
+    @Override
+    public void transactionOnClick(long id) {    }
+
+    @Override
+    public void reminderOnClick(long id) {
 
     }
 
     @Override
-    public void reminderonLongClick(long id) {
-
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Object> loader, Object data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Object> loader) {
-
-    }
-
-    @Override
-    public void transactionOnLongClick(long id) {
-
-    }
-
-    @Override
-    public void transactionOnClick(long id) {
-
+    public void reminderOnLongClick(long id) {
+        mDataSource.deleteDept(id);
+        updateUI();
     }
 }

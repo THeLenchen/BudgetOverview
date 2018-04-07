@@ -4,17 +4,21 @@ package com.example.rauch.malena.budgetoverview;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import com.example.rauch.malena.budgetoverview.Database.DataSource;
+import com.example.rauch.malena.budgetoverview.Depts.Dept;
 import com.example.rauch.malena.budgetoverview.Transaction.Transaction;
 import com.example.rauch.malena.budgetoverview.Transaction.TransactionObjectAdapter;
 
@@ -24,16 +28,19 @@ import java.util.List;
 public class Tab3_transact extends Fragment implements ClickListener {
 
 
-    //private TransactionAdapter mTransactionAdapter;
+    //locale Variables
     private TransactionObjectAdapter mTransactionAdapter;
     private RecyclerView mTransactionRecyclerView;
-    // private List<Transaction> mTransactions;
-    public static final String TRANSACTION_POSITION = "Position";
+    private  EditText mNewText;
+    // Database related to Database
     private Cursor mCursor;
     private DataSource mDataSource;
+    //Constants used when calling the update activity
+    public static final String TRANSACTION_POSITION = "Position";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
         final View rootView = inflater.inflate(R.layout.tap3_transakt, container, false);
 
         //initialise DataSource for database operations
@@ -54,6 +61,7 @@ public class Tab3_transact extends Fragment implements ClickListener {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), AddTransactActivity.class);
                 startActivity(intent);
+                //updateUI();
             }
         });
 
