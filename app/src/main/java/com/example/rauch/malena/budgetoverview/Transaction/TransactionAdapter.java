@@ -17,14 +17,14 @@ import java.util.List;
  * Created by Test on 03.04.2018.
  */
 
-public class TransactionObjectAdapter extends RecyclerView.Adapter<TransactionObjectViewHolder> {
+public class TransactionAdapter extends RecyclerView.Adapter<TransactionObjectViewHolder> {
 
-    //private Context context;
+    private Context context;
     private Cursor mCursor;
 
 
-    public TransactionObjectAdapter(Cursor cursor, Context context) {
-        //this.context = context;
+    public TransactionAdapter(Cursor cursor, Context context) {
+        this.context = context;
         this.mCursor = cursor;
     }
 

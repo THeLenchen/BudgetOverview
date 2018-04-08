@@ -1,25 +1,24 @@
 package com.example.rauch.malena.budgetoverview;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.rauch.malena.budgetoverview.Database.DataSource;
-import com.example.rauch.malena.budgetoverview.Depts.Dept;
 import com.example.rauch.malena.budgetoverview.Depts.DeptAdapter;
 
-public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.DeptClickListener{
+public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.DeptClickListener {
 
     private DeptAdapter mDeptAdapter;
     private RecyclerView mDeptRecyclerView;
@@ -28,17 +27,19 @@ public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.D
     //Database related local variables
     private Cursor mCursor;
     private DataSource mDataSource;
+    private View rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.tap1_depts, container, false);
+        rootView = inflater.inflate(R.layout.tap1_depts, container, false);
 
+        //initialise RecyclerView, set Layout, set Adapter and define Dept layout
         mDeptRecyclerView = rootView.findViewById(R.id.tab1_RecyclerView);
-        //mTransactionRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false));
         mDeptRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
-        mDeptAdapter = new DeptAdapter(this, mCursor);
+        mDeptAdapter = new DeptAdapter(this.getContext(), mCursor);
         mDeptRecyclerView.setAdapter(mDeptAdapter);
 
+        //initialise DataSource for database operations
         mDataSource = new DataSource(rootView.getContext());
         mDataSource.open();
 
@@ -48,9 +49,8 @@ public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.D
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getContext(), AddTransactActivity.class);
-                //startActivity(intent);
-
+                Intent intent = new Intent(getContext(), AddDeptActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -85,34 +85,52 @@ public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.D
     private void updateUI() {
         mCursor = mDataSource.getAllDepts();
         if (mDeptAdapter == null) {
-            mDeptAdapter = new DeptAdapter(this, mCursor);
+            mDeptAdapter = new DeptAdapter(this.getContext(), mCursor);
             mDeptRecyclerView.setAdapter(mDeptAdapter);
         } else {
-            mDeptAdapter.notifyDataSetChanged();
+            mDeptAdapter.swapCursor(mCursor);
         }
     }
 
     @Override
-    public void reminderonClick(long id) {    }
+    public void onResume() {
+        super.onResume();
+        mDataSource.open();
+
+        TextView budget = rootView.findViewById(R.id.tab1_textView_budget);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("test", 0);
+        float budgetString = sharedPreferences.getFloat("budget", 00.00f);
+        budget.setText(String.valueOf(budgetString));
+
+        updateUI();
+    }
 
     @Override
-    public void reminderonLongClick(long id) {    }
+    public void reminderonClick(long id) {
+    }
 
     @Override
-    public void onLoadFinished(Loader<Object> loader, Object data) {    }
+    public void reminderonLongClick(long id) {
+    }
 
     @Override
-    public void onLoaderReset(Loader<Object> loader) {    }
+    public void onLoadFinished(Loader<Object> loader, Object data) {
+    }
 
     @Override
-    public void transactionOnLongClick(long id) {    }
+    public void onLoaderReset(Loader<Object> loader) {
+    }
 
     @Override
-    public void transactionOnClick(long id) {    }
+    public void transactionOnLongClick(long id) {
+    }
+
+    @Override
+    public void transactionOnClick(long id) {
+    }
 
     @Override
     public void reminderOnClick(long id) {
-
     }
 
     @Override

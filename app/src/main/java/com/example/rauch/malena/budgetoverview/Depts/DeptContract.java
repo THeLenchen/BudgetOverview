@@ -20,8 +20,8 @@ public class DeptContract {
     /* Inner class that defines the table contents */
     public static class DeptEntry implements BaseColumns {
         public static final String TABLE_NAME = "Depts";
-        public static final String COLUMN_NAME_DEPT = "dept";
         public static final String COLUMN_NAME_AMAOUNT = "amount";
         public static final String COLUMN_NAME_FRIEND = "friend";
+        public static final String COLUM_NAME_BOOLEAN_GIVE = "booleanGet";
     }
 }

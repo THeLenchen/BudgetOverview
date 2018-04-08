@@ -17,12 +17,15 @@ public class DataSource {
     private Context mContext;
     private SQLiteDatabase mDatabase;
     private DBHelper mDBHelper;
+    private String[] DEPTS_AMOUNT = {DeptContract.DeptEntry.COLUMN_NAME_AMAOUNT};
     private String[] DEPTS_ALL_COLUMNS = {DeptContract.DeptEntry._ID,
-            DeptContract.DeptEntry.COLUMN_NAME_DEPT};
+            DeptContract.DeptEntry.COLUM_NAME_BOOLEAN_GIVE,
+            DeptContract.DeptEntry.COLUMN_NAME_FRIEND,
+            DeptContract.DeptEntry.COLUMN_NAME_AMAOUNT};
     private String[] TRANSACTIONS_ALL_COLUMNS = {TransactionContract.TransactionEntry._ID,
             TransactionContract.TransactionEntry.COLUMN_NAME_TRANSACTION,
             TransactionContract.TransactionEntry.COLUMN_SPENT_TRANSACTION,
-            TransactionContract.TransactionEntry.COLUMN_AMOUNT_TRANSACTION};
+            TransactionContract.TransactionEntry.COLUMN_AMOUNT_TRANSACTION,};
 
     public DataSource(Context context) {
         mContext = context;
@@ -40,17 +43,21 @@ public class DataSource {
     }
 
 
-    /** DEPTS */
+    /**
+     * DEPTS
+     */
     //add Dept to the Database
-    public void createDept(String deptName) {
+    public void createDept(String friend, double amount, boolean booleanGive) {
         ContentValues values = new ContentValues();
-        values.put(DeptContract.DeptEntry.COLUMN_NAME_DEPT, deptName);
+        values.put(DeptContract.DeptEntry.COLUMN_NAME_FRIEND, friend);
+        values.put(DeptContract.DeptEntry.COLUMN_NAME_AMAOUNT, amount);
+        values.put(DeptContract.DeptEntry.COLUM_NAME_BOOLEAN_GIVE, booleanGive);
         mDatabase.insert(DeptContract.DeptEntry.TABLE_NAME, null, values);
     }
 
     public Cursor getAllDepts() {
         return mDatabase.query(DeptContract.DeptEntry.TABLE_NAME,
-               DEPTS_ALL_COLUMNS, null, null, null, null, null);
+                DEPTS_ALL_COLUMNS, null, null, null, null, null);
     }
 
     public void deleteDept(long id) {
@@ -59,19 +66,34 @@ public class DataSource {
 
     }
 
-    public void updateDept(long id, String name) {
+    public void updateDept(long id, String name, String friend, double amount, boolean booleanGive) {
         ContentValues args = new ContentValues();
-        args.put(DeptContract.DeptEntry.COLUMN_NAME_DEPT, name);
+        args.put(DeptContract.DeptEntry.COLUMN_NAME_FRIEND, friend);
+        args.put(DeptContract.DeptEntry.COLUMN_NAME_AMAOUNT, amount);
+        args.put(DeptContract.DeptEntry.COLUM_NAME_BOOLEAN_GIVE, booleanGive);
 
         mDatabase.update(DeptContract.DeptEntry.TABLE_NAME, args, DeptContract.DeptEntry._ID + "=?",
                 new String[]{Long.toString(id)});
     }
 
     public Cursor getOneDept(long id) {
-    return mDatabase.query(DeptContract.DeptEntry.TABLE_NAME, DEPTS_ALL_COLUMNS, TransactionContract.TransactionEntry._ID + " =?", new String[]{Long.toString(id)}, null, null, null);
+        return mDatabase.query(DeptContract.DeptEntry.TABLE_NAME, DEPTS_ALL_COLUMNS, DeptContract.DeptEntry._ID + " =?", new String[]{Long.toString(id)}, null, null, null);
     }
 
-    /** TRANSACTIONS */
+    //create Cursor & move it to the last added Entry to get the double amount
+    public double getAmountOfLatestEntry() {
+        Cursor cursor = mDatabase.query(DeptContract.DeptEntry.TABLE_NAME,
+                DEPTS_ALL_COLUMNS, null, null, null, null, null);
+        cursor.moveToLast();
+        int columIndexAmount = cursor.getColumnIndex(DeptContract.DeptEntry.COLUMN_NAME_AMAOUNT);
+        double amount = cursor.getDouble(columIndexAmount);
+
+        return amount;
+    }
+
+    /**
+     * TRANSACTIONS
+     */
     public void createTransaction(String name, double amount, boolean booleanSpent) {
         ContentValues values = new ContentValues();
         values.put(TransactionContract.TransactionEntry.COLUMN_NAME_TRANSACTION, name);
@@ -85,9 +107,11 @@ public class DataSource {
                 TRANSACTIONS_ALL_COLUMNS, null, null, null, null, null);
     }
 
-    public void updateTransaction(long id, String name) {
+    public void updateTransaction(long id, String name, double amount, boolean booleanSpent) {
         ContentValues args = new ContentValues();
-        args.put(DeptContract.DeptEntry.COLUMN_NAME_DEPT, name);
+        args.put(TransactionContract.TransactionEntry.COLUMN_NAME_TRANSACTION, name);
+        args.put(TransactionContract.TransactionEntry.COLUMN_AMOUNT_TRANSACTION, amount);
+        args.put(TransactionContract.TransactionEntry.COLUMN_SPENT_TRANSACTION, booleanSpent);
 
         mDatabase.update(TransactionContract.TransactionEntry.TABLE_NAME, args, TransactionContract.TransactionEntry._ID + "=?",
                 new String[]{Long.toString(id)});

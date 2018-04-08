@@ -6,23 +6,9 @@
     android:layout_height="match_parent"
     tools:context="com.example.rauch.malena.budgetoverview.AddDeptActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
 
     <ImageButton
-        android:id="@+id/imageButton_delete"
+        android:id="@+id/addDept_imageButton_delete"
         style="@android:style/Widget.DeviceDefault.ImageButton"
         android:layout_width="169dp"
         android:layout_height="wrap_content"
@@ -34,7 +20,7 @@
         app:srcCompat="@android:drawable/ic_menu_delete" />
 
     <ImageButton
-        android:id="@+id/imageButton_save"
+        android:id="@+id/addDept_imageButton_save"
         style="@android:style/Widget.DeviceDefault.ImageButton"
         android:layout_width="164dp"
         android:layout_height="wrap_content"
@@ -45,42 +31,55 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_save" />
 
-    <RadioButton
-        android:id="@+id/addDept_radioButton_get"
+    <RadioGroup
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/get"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addDept_textView_titel" />
-
-    <RadioButton
-        android:id="@+id/addDept_radioButton_give"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/give"
+        app:layout_constraintBottom_toTopOf="@+id/addDept_editText_amount"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addDept_radioButton_get" />
+        app:layout_constraintTop_toBottomOf="@+id/addDept_textView_titel"
+        app:layout_constraintVertical_bias="0.27">
+
+        <RadioButton
+            android:id="@+id/addDept_radioButton_give"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:text="@string/give"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addDept_radioButton_get" />
+
+        <RadioButton
+            android:id="@+id/addDept_radioButton_get"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="52dp"
+            android:layout_marginTop="32dp"
+            android:layout_weight="1"
+            android:text="@string/get"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addDept_textView_titel" />
+    </RadioGroup>
 
     <TextView
         android:id="@+id/addDept_textView_titel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="116dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="52dp"
         android:text="@string/addDept_titel"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/appBarLayout" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/addDept_textView_amount"
         android:layout_width="wrap_content"
         android:layout_height="21dp"
-        android:layout_marginStart="52dp"
+        android:layout_marginStart="48dp"
         android:text="@string/amount"
         app:layout_constraintBottom_toTopOf="@+id/addDept_editText_amount"
         app:layout_constraintStart_toStartOf="parent" />
@@ -89,13 +88,16 @@
         android:id="@+id/addDept_editText_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="164dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="216dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="@string/amount"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addDept_textView_titel" />
+        app:layout_constraintTop_toBottomOf="@+id/addDept_textView_titel"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/addDept_textView_euro"
@@ -103,7 +105,7 @@
         android:layout_height="45dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="300dp"
         android:text="@string/euro"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -115,11 +117,27 @@
         android:id="@+id/addDept_textView_Friend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
+        android:layout_marginStart="48dp"
         android:text="@string/friend"
-        app:layout_constraintBottom_toTopOf="@+id/spinner"
+        app:layout_constraintBottom_toTopOf="@+id/addDept_editText_friend"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <EditText
+        android:id="@+id/addDept_editText_friend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="132dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <!--
     <Button
         android:id="@+id/button"
         style="@style/Widget.AppCompat.Button"
@@ -145,5 +163,5 @@
         android:layout_marginTop="36dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/addDept_editText_amount" />
-
+-->
 </android.support.constraint.ConstraintLayout>

@@ -6,31 +6,20 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.rauch.malena.budgetoverview.ClickListener;
+import com.example.rauch.malena.budgetoverview.R;
 
 public class DeptViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener, View.OnClickListener{
 
-    public TextView textView;
+    public TextView mFriend;
+    public TextView mAmount;
     private ClickListener mClickListener;
     private Cursor mCursor;
-/*
-    public DeptViewHolder(View itemView, ClickListener mTransactiClickListener) {
-        super(itemView);
-        textView= itemView.findViewById(android.R.id.text1);
-        itemView.setOnLongClickListener(this);
-    }
 
-    @Override
-    public boolean onLongClick(View view) {
-        int clickedPosition = getAdapterPosition();
-        mClickListener.transactionOnClick(clickedPosition);
-        return true;
-
-    }
-*/
     public DeptViewHolder(View itemView) {
 
         super(itemView);
-        textView=  itemView.findViewById(android.R.id.text1);
+        mFriend =  itemView.findViewById(R.id.dept_item_name);
+        mAmount = itemView.findViewById(R.id.dept_item_amount);
         itemView.setOnLongClickListener(this);
         itemView.setOnClickListener(this);
     }

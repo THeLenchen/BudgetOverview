@@ -4,13 +4,11 @@ package com.example.rauch.malena.budgetoverview;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,20 +16,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.rauch.malena.budgetoverview.Database.DataSource;
-import com.example.rauch.malena.budgetoverview.Depts.Dept;
-import com.example.rauch.malena.budgetoverview.Transaction.Transaction;
-import com.example.rauch.malena.budgetoverview.Transaction.TransactionObjectAdapter;
-
-import java.util.List;
+import com.example.rauch.malena.budgetoverview.Transaction.TransactionAdapter;
 
 
 public class Tab3_transact extends Fragment implements ClickListener {
 
 
     //locale Variables
-    private TransactionObjectAdapter mTransactionAdapter;
+    private TransactionAdapter mTransactionAdapter;
     private RecyclerView mTransactionRecyclerView;
-    private  EditText mNewText;
     // Database related to Database
     private Cursor mCursor;
     private DataSource mDataSource;
@@ -50,18 +43,17 @@ public class Tab3_transact extends Fragment implements ClickListener {
         //initialise RecyclerView, set Layout, set Adapter and define Transaction layout
         mTransactionRecyclerView = rootView.findViewById(R.id.tab3_RecyclerView_Transakt);
         mTransactionRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
-        mTransactionAdapter = new TransactionObjectAdapter(mCursor, this.getContext());
+        mTransactionAdapter = new TransactionAdapter(mCursor, this.getContext());
         mTransactionRecyclerView.setAdapter(mTransactionAdapter);
 
 
         //initialise the floatingbutton
-        FloatingActionButton button = rootView.findViewById(R.id.floatingActionButton2_test);
+        FloatingActionButton button = rootView.findViewById(R.id.transaction_floatingActionButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), AddTransactActivity.class);
                 startActivity(intent);
-                //updateUI();
             }
         });
 
@@ -106,7 +98,7 @@ public class Tab3_transact extends Fragment implements ClickListener {
     private void updateUI() {
         mCursor = mDataSource.getAllTransactions();
         if (mTransactionAdapter == null) {
-            mTransactionAdapter = new TransactionObjectAdapter(mCursor, this.getContext());
+            mTransactionAdapter = new TransactionAdapter(mCursor, this.getContext());
             mTransactionRecyclerView.setAdapter(mTransactionAdapter);
         } else {
             mTransactionAdapter.swapCursor(mCursor);
@@ -138,22 +130,14 @@ public class Tab3_transact extends Fragment implements ClickListener {
     }
 
     @Override
-    public void onLoadFinished(android.support.v4.content.Loader<Object> loader, Object data) {
-
-    }
+    public void onLoadFinished(android.support.v4.content.Loader<Object> loader, Object data) {    }
 
     @Override
-    public void onLoaderReset(android.support.v4.content.Loader<Object> loader) {
-
-    }
+    public void onLoaderReset(android.support.v4.content.Loader<Object> loader) {    }
 
     @Override
-    public void transactionOnLongClick(long id) {
-
-    }
+    public void transactionOnLongClick(long id) {    }
 
     @Override
-    public void transactionOnClick(long id) {
-
-    }
+    public void transactionOnClick(long id) {    }
 }

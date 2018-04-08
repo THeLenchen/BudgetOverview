@@ -5,18 +5,37 @@ package com.example.rauch.malena.budgetoverview.Depts;
  */
 
 public class Dept {
-    private String text;
+    private String friend;
+
+    public boolean isLoan() {
+        return loan;
+    }
+
+    public void setLoan(boolean loan) {
+        this.loan = loan;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    private boolean loan;
+    private double amount;
 
     public Dept(String text) {
-        this.text = text;
+        friend = text;
     }
 
     public String getText() {
-        return text;
+        return friend;
     }
 
     @Override
     public String toString() {
-        return text;
+        return friend;
     }
 }

@@ -16,7 +16,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_FIRST_NAME = "budgetOverview";
     public static final String DATABASE_NAME_EXTENSION = ".db";
     public static final String DATABASE_NAME = DATABASE_FIRST_NAME + DATABASE_NAME_EXTENSION;
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 8;
 
     //Create the tables
     private static final String DATABASE_CREATE_TRANSACTION =
@@ -31,9 +31,9 @@ public class DBHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + DeptContract.DeptEntry.TABLE_NAME +
                     "(" +
                     DeptContract.DeptEntry._ID + " INTEGER PRIMARY KEY, " +
-                    DeptContract.DeptEntry.COLUMN_NAME_DEPT + " TEXT, " +
                     DeptContract.DeptEntry.COLUMN_NAME_AMAOUNT + " BLOB, " +
-                    DeptContract.DeptEntry.COLUMN_NAME_FRIEND + " TEXT " +
+                    DeptContract.DeptEntry.COLUMN_NAME_FRIEND + " TEXT, " +
+                    DeptContract.DeptEntry.COLUM_NAME_BOOLEAN_GIVE + " BLOB " +
                     ");";
 
     public DBHelper(Context context) {

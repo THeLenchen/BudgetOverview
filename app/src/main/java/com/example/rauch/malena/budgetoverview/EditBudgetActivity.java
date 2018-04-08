@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class EditBudgetActivity extends AppCompatActivity {
-    private Activity mAct;
+
     private EditText mNewBudget;
     private static final String FILENAME = "test";
     private static final String VAL_KEY = "budget";
@@ -30,7 +30,6 @@ public class EditBudgetActivity extends AppCompatActivity {
         old.setText(String.valueOf(temp));
 
         mNewBudget = findViewById(R.id.edit_editBudget);
-        mAct = this;
 
         ImageButton save = findViewById(R.id.imageButton_save);
         save.setOnClickListener(new View.OnClickListener() {
