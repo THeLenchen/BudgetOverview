@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -17,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.rauch.malena.budgetoverview.Database.DataSource;
+import com.example.rauch.malena.budgetoverview.Depts.AddDeptActivity;
 import com.example.rauch.malena.budgetoverview.Depts.DeptAdapter;
 
 public class Tab1_depts extends Fragment implements ClickListener {

@@ -21,11 +21,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddDeptActivity"
+            android:name=".Depts.AddDeptActivity"
             android:label="@string/title_activity_add_dept"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AddTransactActivity"
+            android:name=".Transaction.AddTransactActivity"
             android:label="@string/title_activity_add_transakt"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AddFriendActivity" />

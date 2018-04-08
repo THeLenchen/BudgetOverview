@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -18,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.rauch.malena.budgetoverview.Database.DataSource;
+import com.example.rauch.malena.budgetoverview.Transaction.AddTransactActivity;
 import com.example.rauch.malena.budgetoverview.Transaction.TransactionAdapter;
 
 

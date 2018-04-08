@@ -1,4 +1,4 @@
-package com.example.rauch.malena.budgetoverview;
+package com.example.rauch.malena.budgetoverview.Transaction;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +11,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.rauch.malena.budgetoverview.Database.DataSource;
+import com.example.rauch.malena.budgetoverview.R;
 
 public class AddTransactActivity extends AppCompatActivity {
 
