@@ -28,7 +28,7 @@
             android:name=".Transaction.AddTransactActivity"
             android:label="@string/title_activity_add_transakt"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AddFriendActivity" />
+        <activity android:name=".Friends.AddFriendActivity" />
         <activity android:name=".EditBudgetActivity" />
 
     </application>

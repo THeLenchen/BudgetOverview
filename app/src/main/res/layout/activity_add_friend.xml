@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.rauch.malena.budgetoverview.AddFriendActivity">
+    tools:context="com.example.rauch.malena.budgetoverview.Friends.AddFriendActivity">
 
     <TextView
         android:id="@+id/edit_textView_LableNewBudget"

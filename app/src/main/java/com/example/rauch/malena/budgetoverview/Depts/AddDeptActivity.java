@@ -85,16 +85,16 @@ public class AddDeptActivity extends AppCompatActivity {
                         editor.putFloat("budget", Float.valueOf(budgetString));
 
                         //Edit get
-                        float tempGet = sharedPreferences.getFloat(VAL_KEY_BUDGET, 00.00f);
+                        float tempGet = sharedPreferences.getFloat(VAL_KEY_GET_FROM, 00.00f);
                         double newGet = tempGet + mDataSource.getDeptAmountOfLatestEntry();
                         String getString = Double.toString(newGet);
-                        editor.putFloat("budget", Float.valueOf(getString));
+                        editor.putFloat(VAL_KEY_GET_FROM, Float.valueOf(getString));
 
                         //Edit give
-                        float tempGive = sharedPreferences.getFloat(VAL_KEY_BUDGET, 00.00f);
+                        float tempGive = sharedPreferences.getFloat(VAL_KEY_GIVE_TO, 00.00f);
                         double newGive = tempGive + mDataSource.getDeptAmountOfLatestEntry();
                         String giveString = Double.toString(newGive);
-                        editor.putFloat("budget", Float.valueOf(giveString));
+                        editor.putFloat(VAL_KEY_GIVE_TO, Float.valueOf(giveString));
 
                         editor.commit();
                         editor.apply();
