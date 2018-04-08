@@ -19,7 +19,6 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionObjectVi
     private Context context;
     private Cursor mCursor;
 
-
     public TransactionAdapter(Cursor cursor, Context context) {
         this.context = context;
         this.mCursor = cursor;
