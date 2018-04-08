@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
@@ -44,7 +45,7 @@ public class Tab3_transact extends Fragment implements ClickListener {
 
         //initialise RecyclerView, set Layout, set Adapter and define Transaction layout
         mTransactionRecyclerView = rootView.findViewById(R.id.tab3_RecyclerView_Transakt);
-        mTransactionRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
+        mTransactionRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mTransactionAdapter = new TransactionAdapter(mCursor, this.getContext());
         mTransactionRecyclerView.setAdapter(mTransactionAdapter);
 
@@ -115,7 +116,7 @@ public class Tab3_transact extends Fragment implements ClickListener {
         TextView budget = rootView.findViewById(R.id.tab3_textView_budget);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("test", 0);
         float budgetString = sharedPreferences.getFloat("budget", 00.00f);
-        budget.setText(String.valueOf(budgetString));
+        budget.setText(String.valueOf(budgetString)+" €");
 
     }
 

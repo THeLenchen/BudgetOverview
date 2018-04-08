@@ -1,5 +1,6 @@
 package com.example.rauch.malena.budgetoverview;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -67,6 +68,14 @@ public class AddTransactActivity extends AppCompatActivity {
                     if (goOn == true) {
                         String name = mName.getText().toString();
                         mDataSource.createTransaction(name, amount, mBooleanSpent);
+                        SharedPreferences sharedPreferences = getSharedPreferences("test", 0);
+                        float temp = sharedPreferences.getFloat("budget", 00.00f);
+                        double newBudget = temp + mDataSource.getTransactionAmountOfLatestEntry();
+                        String budgetString = Double.toString(newBudget);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putFloat("budget", Float.valueOf(budgetString));
+                        editor.commit();
+                        editor.apply();
                         mDataSource.close();
                         finish();
                     }

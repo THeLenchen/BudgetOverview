@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.rauch.malena.budgetoverview.Depts.DeptContract;
-import com.example.rauch.malena.budgetoverview.Transaction.Transaction;
 import com.example.rauch.malena.budgetoverview.Transaction.TransactionContract;
 
 /**
@@ -56,17 +55,24 @@ public class DataSource {
         mDatabase.insert(DeptContract.DeptEntry.TABLE_NAME, null, values);
     }
 
-    //retruns a Cursor which contains all Depts
+    //retruns a Cursor which contains all Depts, last Dept first
     public Cursor getAllDepts() {
         return mDatabase.query(DeptContract.DeptEntry.TABLE_NAME,
-                DEPTS_ALL_COLUMNS, null, null, null, null, null);
+                DEPTS_ALL_COLUMNS, null, null, null, null, DeptContract.DeptEntry._ID + " DESC");
     }
 
     //delete a Dept
-    public void deleteDept(long id) {
+    public double deleteDept(long id) {
+        Cursor cursor = mDatabase.query(DeptContract.DeptEntry.TABLE_NAME, DEPTS_ALL_COLUMNS, DeptContract.DeptEntry._ID + " =?", new String[]{Long.toString(id)}, null, null, null);
+        int columIndexAmount = cursor.getColumnIndex(DeptContract.DeptEntry.COLUMN_NAME_AMAOUNT);
+        double amount = cursor.getDouble(columIndexAmount);
+        int columIndexBoolean = cursor.getColumnIndex(DeptContract.DeptEntry.COLUM_NAME_BOOLEAN_GIVE);
+        if (cursor.getInt(columIndexBoolean) == 1) {
+            amount = -amount;
+        }
         mDatabase.delete(TransactionContract.TransactionEntry.TABLE_NAME, TransactionContract.TransactionEntry._ID + " =?",
                 new String[]{Long.toString(id)});
-
+        return amount;
     }
 
     //Update a det
@@ -93,11 +99,27 @@ public class DataSource {
         int columIndexAmount = cursor.getColumnIndex(DeptContract.DeptEntry.COLUMN_NAME_AMAOUNT);
         double amount = cursor.getDouble(columIndexAmount);
         int columIndexBoolean = cursor.getColumnIndex(DeptContract.DeptEntry.COLUM_NAME_BOOLEAN_GIVE);
-        if(cursor.getInt(columIndexBoolean) == 1){
+        if (cursor.getInt(columIndexBoolean) == 1) {
             amount = -amount;
         }
         return amount;
     }
+
+    public double getAmountOfMoneyToGiveOrToGet(boolean give) {
+        int booleanAsInt = 0;
+        if (give) booleanAsInt = 1;
+        Cursor cursor = mDatabase.query(DeptContract.DeptEntry.TABLE_NAME,
+                DEPTS_ALL_COLUMNS, DeptContract.DeptEntry.COLUM_NAME_BOOLEAN_GIVE + " = " + booleanAsInt, null, null, null, null);
+        int columIndexAmount = cursor.getColumnIndex(DeptContract.DeptEntry.COLUMN_NAME_AMAOUNT);
+        double amount = 0;
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            amount = amount + cursor.getDouble(columIndexAmount);
+            cursor.moveToNext();
+        }
+        return amount;
+    }
+
 
     /**
      * TRANSACTIONS
@@ -114,7 +136,7 @@ public class DataSource {
     //returns a cursor with all Transactions
     public Cursor getAllTransactions() {
         return mDatabase.query(TransactionContract.TransactionEntry.TABLE_NAME,
-                TRANSACTIONS_ALL_COLUMNS, null, null, null, null, null);
+                TRANSACTIONS_ALL_COLUMNS, null, null, null, null, TransactionContract.TransactionEntry._ID + " DESC");
     }
 
     //updates a specific transaction
@@ -141,7 +163,7 @@ public class DataSource {
         int columIndexAmount = cursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_AMOUNT_TRANSACTION);
         double amount = cursor.getDouble(columIndexAmount);
         int columIndexBoolean = cursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_SPENT_TRANSACTION);
-        if(cursor.getInt(columIndexBoolean) == 1){
+        if (cursor.getInt(columIndexBoolean) == 0) {
             amount = -amount;
         }
         return amount;

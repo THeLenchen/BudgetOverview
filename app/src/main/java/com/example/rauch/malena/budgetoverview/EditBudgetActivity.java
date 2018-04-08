@@ -40,7 +40,7 @@ public class EditBudgetActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //saves the new entered budget into the SharedPreference
                 SharedPreferences.Editor editor = mSharedPref.edit();
-                editor.putFloat("budget", Float.valueOf(mNewBudget.getText().toString()));
+                editor.putFloat(VAL_KEY, Float.valueOf(mNewBudget.getText().toString()));
                 editor.commit();
                 editor.apply();
                 finish();

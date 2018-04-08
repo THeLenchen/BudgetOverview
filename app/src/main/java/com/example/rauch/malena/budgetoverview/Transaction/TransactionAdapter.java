@@ -4,15 +4,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.rauch.malena.budgetoverview.R;
-
-import java.util.List;
 
 /**
  * Created by Test on 03.04.2018.
@@ -45,11 +41,11 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionObjectVi
         String name = mCursor.getString(mCursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_NAME_TRANSACTION));
         String amount = mCursor.getString(mCursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_AMOUNT_TRANSACTION));
         int booleanSpent = mCursor.getInt(mCursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_SPENT_TRANSACTION));
-        if(booleanSpent == 1){
-            amount = "- "+amount;
+        if (booleanSpent == 0) {
+            amount = "- " + amount + " €";
             holder.mAmount.setTextColor(Color.RED);
         } else {
-            amount = "+ "+amount;
+            amount = "+ " + amount + " €";
             holder.mAmount.setTextColor(Color.GREEN);
         }
         holder.mName.setText(name);

@@ -24,4 +24,6 @@
     <string name="name">Name</string>
     <string name="addTransactions">Add new Transaction</string>
     <string name="spent">spent</string>
+    <string name="getMoney">Your friends have to give you:</string>
+    <string name="giveMoney">You have to give your friends:</string>
 </resources>

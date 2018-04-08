@@ -5,17 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:id="@+id/deptItem_LinearLAyout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/dept_item_name"
@@ -26,7 +15,9 @@
             android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:text="@string/name"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/dept_item_amount"
@@ -34,12 +25,15 @@
             android:layout_height="wrap_content"
             android:layout_margin="22dp"
             android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:text="@string/amount"
-            android:textSize="22sp" />
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/dept_item_name"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

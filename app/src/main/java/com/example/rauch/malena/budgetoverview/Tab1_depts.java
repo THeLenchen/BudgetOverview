@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
@@ -18,34 +19,43 @@ import android.widget.TextView;
 import com.example.rauch.malena.budgetoverview.Database.DataSource;
 import com.example.rauch.malena.budgetoverview.Depts.DeptAdapter;
 
-public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.DeptClickListener {
+public class Tab1_depts extends Fragment implements ClickListener {
 
     private DeptAdapter mDeptAdapter;
     private RecyclerView mDeptRecyclerView;
     //Constants used when calling the update activity
     public static final String DEPT_POSITION = "Position";
+    //Constants used for SharedPreference
+    private static final String FILENAME = "test";
+    private static final String VAL_KEY_BUDGET = "budget";
+    private static final String VAL_KEY_GIVE_TO = "giveTo";
+    private static final String VAL_KEY_GET_FROM = "getFrom";
     //Database related local variables
     private Cursor mCursor;
     private DataSource mDataSource;
-    private View rootView;
+    private View mRootView;
+    private TextView mGet;
+    private TextView mGive;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.tap1_depts, container, false);
+        mRootView = inflater.inflate(R.layout.tap1_depts, container, false);
 
         //initialise RecyclerView, set Layout, set Adapter and define Dept layout
-        mDeptRecyclerView = rootView.findViewById(R.id.tab1_RecyclerView);
-        mDeptRecyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 2));
+        mDeptRecyclerView = mRootView.findViewById(R.id.tab1_RecyclerView);
+        mDeptRecyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         mDeptAdapter = new DeptAdapter(this.getContext(), mCursor);
         mDeptRecyclerView.setAdapter(mDeptAdapter);
 
         //initialise DataSource for database operations
-        mDataSource = new DataSource(rootView.getContext());
+        mDataSource = new DataSource(mRootView.getContext());
         mDataSource.open();
 
+        mGet = mRootView.findViewById(R.id.tab1_textView_get);
+        mGive = mRootView.findViewById(R.id.tab1_textView_give);
 
         //initialise the floatingbutton
-        FloatingActionButton button = rootView.findViewById(R.id.tap1_floatingActionButton);
+        FloatingActionButton button = mRootView.findViewById(R.id.tap1_floatingActionButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +78,16 @@ public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.D
 
                         //Get the index corresponding to the selected position
                         int position = (viewHolder.getAdapterPosition());
-                        //Remove from Database
+                        DataSource mDataSource = new DataSource(mRootView.getContext());
+                        mDataSource.open();
+                        SharedPreferences sharedPreferences = mRootView.getContext().getSharedPreferences("test", 0);
+                        float temp = sharedPreferences.getFloat("budget", 00.00f);
+                        double newBudget = temp + mDataSource.deleteDept(position);
+                        String budgetString = Double.toString(newBudget);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putFloat("budget", Float.valueOf(budgetString));
+                        editor.commit();
+                        editor.apply();
                         mDeptAdapter.notifyItemRemoved(position);
                     }
                 };
@@ -79,7 +98,7 @@ public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.D
 
         updateUI();
 
-        return rootView;
+        return mRootView;
     }
 
     //Updates the UI
@@ -92,10 +111,26 @@ public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.D
             mDeptAdapter.swapCursor(mCursor);
         }
 
-        TextView budget = rootView.findViewById(R.id.tab1_textView_budget);
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("test", 0);
-        float budgetString = sharedPreferences.getFloat("budget", 00.00f);
-        budget.setText(String.valueOf(budgetString));
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(FILENAME, 0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        float get = sharedPreferences.getFloat(VAL_KEY_GET_FROM, 00.00f);
+        if (get <= 00.00f) {
+            editor.putFloat(VAL_KEY_GET_FROM, (float) mDataSource.getAmountOfMoneyToGiveOrToGet(true));
+            editor.commit();
+            editor.apply();
+            get = sharedPreferences.getFloat(VAL_KEY_GET_FROM, 00.00f);
+        }
+        mGet.setText(String.valueOf(get) + " €");
+
+        float give = sharedPreferences.getFloat(VAL_KEY_GIVE_TO, 00.00f);
+        if (give <= 00.00f) {
+            editor.putFloat(VAL_KEY_GIVE_TO, (float) mDataSource.getAmountOfMoneyToGiveOrToGet(false));
+            editor.commit();
+            editor.apply();
+            give = sharedPreferences.getFloat(VAL_KEY_GIVE_TO, 00.00f);
+        }
+        mGive.setText(String.valueOf(give) + " €");
 
     }
 
@@ -131,13 +166,4 @@ public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.D
     public void transactionOnClick(long id) {
     }
 
-    @Override
-    public void reminderOnClick(long id) {
-    }
-
-    @Override
-    public void reminderOnLongClick(long id) {
-        mDataSource.deleteDept(id);
-        updateUI();
-    }
 }

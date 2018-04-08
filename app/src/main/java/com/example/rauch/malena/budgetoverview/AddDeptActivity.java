@@ -22,6 +22,11 @@ public class AddDeptActivity extends AppCompatActivity {
     private TextView mName;
     private TextView mAmount;
     private int mBooleanGet;
+    //Constants used for SharedPreference
+    private static final String FILENAME = "test";
+    private static final String VAL_KEY_BUDGET = "budget";
+    private static final String VAL_KEY_GIVE_TO = "giveTo";
+    private static final String VAL_KEY_GET_FROM = "getFrom";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +54,7 @@ public class AddDeptActivity extends AppCompatActivity {
                 boolean goOn = true;
                 if (mGive.isChecked()) {
                     mBooleanGet = 1;
-                } else if(mGet.isChecked()){
+                } else if (mGet.isChecked()) {
                     mBooleanGet = 0;
                 } else {
                     Snackbar.make(view, "You have to select get or give", Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -67,12 +72,28 @@ public class AddDeptActivity extends AppCompatActivity {
                     if (goOn == true) {
                         String name = mName.getText().toString();
                         mDataSource.createDept(name, amount, mBooleanGet);
-                        SharedPreferences sharedPreferences = getSharedPreferences("test", 0);
-                        float temp = sharedPreferences.getFloat("budget", 00.00f);
-                        double newBudget = temp + mDataSource.getDeptAmountOfLatestEntry();
-                        String budgetString = Double.toString(newBudget);
+
+                        SharedPreferences sharedPreferences = getSharedPreferences(FILENAME, 0);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                        //Edit Budget
+                        float tempBudget = sharedPreferences.getFloat(VAL_KEY_BUDGET, 00.00f);
+                        double newBudget = tempBudget + mDataSource.getDeptAmountOfLatestEntry();
+                        String budgetString = Double.toString(newBudget);
                         editor.putFloat("budget", Float.valueOf(budgetString));
+
+                        //Edit get
+                        float tempGet = sharedPreferences.getFloat(VAL_KEY_BUDGET, 00.00f);
+                        double newGet = tempGet + mDataSource.getDeptAmountOfLatestEntry();
+                        String getString = Double.toString(newGet);
+                        editor.putFloat("budget", Float.valueOf(getString));
+
+                        //Edit give
+                        float tempGive = sharedPreferences.getFloat(VAL_KEY_BUDGET, 00.00f);
+                        double newGive = tempGive + mDataSource.getDeptAmountOfLatestEntry();
+                        String giveString = Double.toString(newGive);
+                        editor.putFloat("budget", Float.valueOf(giveString));
+
                         editor.commit();
                         editor.apply();
                         mDataSource.close();
