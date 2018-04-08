@@ -14,12 +14,11 @@ import com.example.rauch.malena.budgetoverview.Database.DataSource;
 public class AddTransactActivity extends AppCompatActivity {
 
     private DataSource mDataSource;
-    private long mID;
     private RadioButton mSpent;
     private RadioButton mGet;
     private TextView mName;
     private TextView mAmount;
-    private boolean mBooleanSpent;
+    private int mBooleanSpent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,28 +27,31 @@ public class AddTransactActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Obtain parameters providet by Tab3_transact
-        mID = getIntent().getLongExtra(Tab3_transact.TRANSACTION_POSITION, -1);
 
         //initialise and open DataSource
         mDataSource = new DataSource(this);
         mDataSource.open();
 
+        //initialise the UI elements
         mSpent = findViewById(R.id.addTransaction_radioButton_give);
         mGet = findViewById(R.id.addTransaction_radioButton_get);
         mAmount = findViewById(R.id.addTransaction_editText_amount);
         mName = findViewById(R.id.addTransaction_editText_name);
 
-
+        //sets clickListener to save button
+        //checks if everything is filled in correctly
+        //if yes: saves the data in Database, if no: gives error
         ImageButton save = findViewById(R.id.addTransaction_imageButton_save);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 boolean goOn = true;
                 if (mSpent.isChecked()) {
-                    mBooleanSpent = true;
+                    mBooleanSpent = 1;
+                } else if ((mGet.isChecked())){
+                    mBooleanSpent = 0;
                 } else {
-                    mBooleanSpent = false;
+                    Snackbar.make(view, "You have to select get or spent", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
 
                 if (goOn == true) {
@@ -71,6 +73,8 @@ public class AddTransactActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //return if delete button is pressed
         ImageButton delete = findViewById(R.id.addTransaction_imageButton_delete);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override

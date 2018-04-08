@@ -2,6 +2,7 @@ package com.example.rauch.malena.budgetoverview;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -13,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.rauch.malena.budgetoverview.Database.DataSource;
 import com.example.rauch.malena.budgetoverview.Transaction.TransactionAdapter;
@@ -30,11 +31,12 @@ public class Tab3_transact extends Fragment implements ClickListener {
     private DataSource mDataSource;
     //Constants used when calling the update activity
     public static final String TRANSACTION_POSITION = "Position";
+    private View rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        final View rootView = inflater.inflate(R.layout.tap3_transakt, container, false);
+        rootView = inflater.inflate(R.layout.tap3_transakt, container, false);
 
         //initialise DataSource for database operations
         mDataSource = new DataSource(rootView.getContext());
@@ -52,11 +54,13 @@ public class Tab3_transact extends Fragment implements ClickListener {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Start the AddTransactionActivity by taping the button
                 Intent intent = new Intent(getContext(), AddTransactActivity.class);
                 startActivity(intent);
             }
         });
 
+        //Item Touch to delete an Entry
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback =
                 new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
                     @Override
@@ -72,6 +76,7 @@ public class Tab3_transact extends Fragment implements ClickListener {
                     }
                 };
 
+        //attache the ItemTouchHelper to the Recyclerview
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(mTransactionRecyclerView);
 
@@ -80,6 +85,7 @@ public class Tab3_transact extends Fragment implements ClickListener {
         return rootView;
     }
 
+    //update UI and open DataSource when returning from an activity
     @Override
     public void onResume() {
         super.onResume();
@@ -87,6 +93,7 @@ public class Tab3_transact extends Fragment implements ClickListener {
         updateUI();
     }
 
+    //closes the dataSource and the cursor if the App is paused
     @Override
     public void onPause() {
         super.onPause();
@@ -95,6 +102,7 @@ public class Tab3_transact extends Fragment implements ClickListener {
     }
 
 
+    //Updates the UI
     private void updateUI() {
         mCursor = mDataSource.getAllTransactions();
         if (mTransactionAdapter == null) {
@@ -103,31 +111,33 @@ public class Tab3_transact extends Fragment implements ClickListener {
         } else {
             mTransactionAdapter.swapCursor(mCursor);
         }
+
+        TextView budget = rootView.findViewById(R.id.tab3_textView_budget);
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("test", 0);
+        float budgetString = sharedPreferences.getFloat("budget", 00.00f);
+        budget.setText(String.valueOf(budgetString));
+
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void reminderonClick(long id) {
-        //Intent intent = new Intent(MainActivity.this, UpdateActivity.class);
+        //Intent intent = new Intent(this, UpdateActivity.class);
         //intent.putExtra(TRANSACTION_POSITION, id);
         //startActivity (intent);
     }
 
     @Override
-    public void reminderonLongClick(long id) {
-       // Uri singleUri = ContentUris.withAppendedId(ReminderContract.CONTENT_URI,id);
-       // getContentResolver().delete(singleUri, null, null);
-    }
+    public void reminderonLongClick(long id) {    }
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<Object> loader, Object data) {    }

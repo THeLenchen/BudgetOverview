@@ -53,6 +53,7 @@ public class Tab2_home  extends Fragment{
         return rootView;
     }
 
+    //update UI and open DataSource when returning from an activity
     @Override
     public void onResume() {
         super.onResume();

@@ -2,6 +2,7 @@ package com.example.rauch.malena.budgetoverview.Transaction;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -35,6 +36,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionObjectVi
         return new TransactionObjectViewHolder(view);
     }
 
+    //fills with data
     @Override
     public void onBindViewHolder(TransactionObjectViewHolder holder, int position) {
         // Move the mCursor to the position of the item to be displayed
@@ -42,18 +44,27 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionObjectVi
             return; // bail if returned null
         String name = mCursor.getString(mCursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_NAME_TRANSACTION));
         String amount = mCursor.getString(mCursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_AMOUNT_TRANSACTION));
-
+        int booleanSpent = mCursor.getInt(mCursor.getColumnIndex(TransactionContract.TransactionEntry.COLUMN_SPENT_TRANSACTION));
+        if(booleanSpent == 1){
+            amount = "- "+amount;
+            holder.mAmount.setTextColor(Color.RED);
+        } else {
+            amount = "+ "+amount;
+            holder.mAmount.setTextColor(Color.GREEN);
+        }
         holder.mName.setText(name);
         holder.mAmount.setText(amount);
 
     }
 
+    //returns amount of culloms in the cursor
     @Override
     public int getItemCount() {
         return (mCursor == null ? 0 : mCursor.getCount());
         //return mTransactions.size();
     }
 
+    //swaps cirsors
     public void swapCursor(Cursor newCursor) {
         if (mCursor != null) mCursor.close();
         mCursor = newCursor;

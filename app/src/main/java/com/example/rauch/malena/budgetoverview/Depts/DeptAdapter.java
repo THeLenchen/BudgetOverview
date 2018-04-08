@@ -20,6 +20,7 @@ public class DeptAdapter extends RecyclerView.Adapter<DeptViewHolder> {
         void reminderOnLongClick(long id);
     }
 
+    //Constructor
     public DeptAdapter(Context context, Cursor cursor) {
         mCursor = cursor;
         mContext = context;
@@ -44,11 +45,13 @@ public class DeptAdapter extends RecyclerView.Adapter<DeptViewHolder> {
         holder.mAmount.setText(amount);
     }
 
+    //Counts the amount of items in the cursor
     @Override
     public int getItemCount() {
         return (mCursor == null ? 0 : mCursor.getCount());
     }
 
+    //makes a new cursor and closes the old one
     public void swapCursor(Cursor newCursor) {
         if (mCursor != null) mCursor.close();
         mCursor = newCursor;

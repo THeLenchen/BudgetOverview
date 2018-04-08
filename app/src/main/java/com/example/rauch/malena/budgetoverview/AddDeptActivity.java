@@ -21,7 +21,7 @@ public class AddDeptActivity extends AppCompatActivity {
     private RadioButton mGet;
     private TextView mName;
     private TextView mAmount;
-    private boolean mBooleanGet;
+    private int mBooleanGet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +48,11 @@ public class AddDeptActivity extends AppCompatActivity {
             public void onClick(View view) {
                 boolean goOn = true;
                 if (mGive.isChecked()) {
-                    mBooleanGet = true;
+                    mBooleanGet = 1;
+                } else if(mGet.isChecked()){
+                    mBooleanGet = 0;
                 } else {
-                    mBooleanGet = false;
+                    Snackbar.make(view, "You have to select get or give", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
 
                 if (goOn == true) {
@@ -67,7 +69,7 @@ public class AddDeptActivity extends AppCompatActivity {
                         mDataSource.createDept(name, amount, mBooleanGet);
                         SharedPreferences sharedPreferences = getSharedPreferences("test", 0);
                         float temp = sharedPreferences.getFloat("budget", 00.00f);
-                        double newBudget = temp - mDataSource.getAmountOfLatestEntry();
+                        double newBudget = temp + mDataSource.getDeptAmountOfLatestEntry();
                         String budgetString = Double.toString(newBudget);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putFloat("budget", Float.valueOf(budgetString));
@@ -79,6 +81,8 @@ public class AddDeptActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //return if delete button is pressed
         ImageButton delete = findViewById(R.id.addDept_imageButton_delete);
         delete.setOnClickListener(new View.OnClickListener() {
             @Override

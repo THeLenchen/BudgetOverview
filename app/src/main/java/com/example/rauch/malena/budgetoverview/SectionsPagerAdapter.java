@@ -5,15 +5,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 /**
- * Created by Test on 16.03.2018.
+ * Created by Test on 16.03.2018
+ * needet to change the fragment for the selected Tab
  */
 
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+    //Constructor
     public SectionsPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
+    //returns the selectet Tab
     @Override
     public Fragment getItem(int position) {
         switch (position){
@@ -31,12 +34,14 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         }
     }
 
+    //returns the number of tabs
     @Override
     public int getCount() {
         // Show 3 total pages.
         return 3;
     }
 
+    //returns the titel of the selected Tab
     @Override
     public CharSequence getPageTitle(int position){
         switch (position){

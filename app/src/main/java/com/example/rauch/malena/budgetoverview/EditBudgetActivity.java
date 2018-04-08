@@ -17,6 +17,7 @@ public class EditBudgetActivity extends AppCompatActivity {
     private static final String VAL_KEY = "budget";
     private SharedPreferences mSharedPref;
 
+    //Constructor
     public EditBudgetActivity() {   }
 
     @Override
@@ -24,12 +25,14 @@ public class EditBudgetActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_budget);
 
+        //initialise the 
         TextView old = findViewById(R.id.edit_textView_budget);
+        mNewBudget = findViewById(R.id.edit_editBudget);
+
         mSharedPref = getSharedPreferences(FILENAME, 0);
         float temp = mSharedPref.getFloat(VAL_KEY, 00.00f);
         old.setText(String.valueOf(temp));
 
-        mNewBudget = findViewById(R.id.edit_editBudget);
 
         ImageButton save = findViewById(R.id.imageButton_save);
         save.setOnClickListener(new View.OnClickListener() {

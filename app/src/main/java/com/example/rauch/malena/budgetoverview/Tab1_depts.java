@@ -68,7 +68,7 @@ public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.D
 
                         //Get the index corresponding to the selected position
                         int position = (viewHolder.getAdapterPosition());
-                        //       mReminders.remove(position);
+                        //Remove from Database
                         mDeptAdapter.notifyItemRemoved(position);
                     }
                 };
@@ -82,6 +82,7 @@ public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.D
         return rootView;
     }
 
+    //Updates the UI
     private void updateUI() {
         mCursor = mDataSource.getAllDepts();
         if (mDeptAdapter == null) {
@@ -90,18 +91,19 @@ public class Tab1_depts extends Fragment implements ClickListener, DeptAdapter.D
         } else {
             mDeptAdapter.swapCursor(mCursor);
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mDataSource.open();
 
         TextView budget = rootView.findViewById(R.id.tab1_textView_budget);
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("test", 0);
         float budgetString = sharedPreferences.getFloat("budget", 00.00f);
         budget.setText(String.valueOf(budgetString));
 
+    }
+
+    //update UI and open DataSource when returning from an activity
+    @Override
+    public void onResume() {
+        super.onResume();
+        mDataSource.open();
         updateUI();
     }
 
